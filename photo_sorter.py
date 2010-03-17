@@ -135,21 +135,44 @@ def process_images(pattern, mode, image_list, output, verbose=False,
                     print("WARNING: Custom exif date field \"{0}\" not found"\
                         "in \"{1}\"".format(exif_date, filename))
 
-        photos.append({'filename':os.path.abspath(filename), 'date':date})
+        photos.append({'filename':os.path.abspath(filename), 'date':date, 'image':image})
         if not date:
             print('WARNING: Unable to recognize {0} date, skipping'\
                 .format(filename))
 
-
+    # Replacing pattern with more sophisticated one
+    l = len(photos)
+    min_n_width = str(max(len(str(l)), 4))
+    pattern = pattern.replace("{n}","{n:0"+min_n_width+"}")
     #sorting photos according to time taken and filename
     photos = sorted(photos, key=keygetter('filename'))
     photos = sorted(photos, key=keygetter('date'))
+    # Initializing vars
+    model_mapping = {None:"_"}
+    next_model_id = "A"
     for i, p in enumerate(photos):
-        l = len(photos)
-        min_n_width = str(max(len(str(l)), 3))
         src = p['filename']
-        # Replacing pattern with more sophisticated one
-        new_name = pattern.format(n="{n:0"+min_n_width+"}").format(n=i+1)
+        img = p['image']
+        new_name = pattern
+        # Formatting pattern. Since 'format' requires all arguments on one call,
+        #   use 'replace' instead
+        if pattern.find("{model}") >= 0:
+            try:
+                model = img['Exif.Image.Model']
+            except KeyError:
+                model = None
+            
+            try:
+                model_id = model_mapping[model]
+            except KeyError:
+                model_mapping[model] = next_model_id
+                model_id = next_model_id
+                next_model_id = chr(ord(next_model_id)+1)
+
+            new_name = new_name.replace("{model}", model_id)
+        # Call 'format' in the end, since it requires all template vars to be
+        #  filled.
+        new_name = new_name.format(n=i+1)
         # Creating final output filename
         ext = os.path.splitext(src)[1]
         if ext: new_name += ext.lower()
