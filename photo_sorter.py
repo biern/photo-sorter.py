@@ -18,7 +18,7 @@
 #   - Readme and docs
 #   - more optional arguments for filename template
 #   - switch and prompt for overriding existing files
-#   - dummy mode
+
 
 import sys
 import os
@@ -30,7 +30,7 @@ import pyexiv2
 
 def parse_options():
     parser = OptionParser()
-    skip_names = ('link','move','update','copy')
+    modes = ('link', 'move', 'update', 'copy', 'dummy')
     parser.add_option("-o", "--output", dest="output",
                     help="Use specified image output directory. If not set"\
                     ", each image's original directory is preserved",
@@ -68,30 +68,35 @@ def parse_options():
                     help="Like -m but also creates symbolic links for new"\
                     " images with old one's path and name")
 
+    parser.add_option("-d", "--dummy", dest="dummy", action="store_true",
+                    default=False,
+                    help="Does not perform any changes, just prints list of"\
+                        " sorted files with names and path they would get")
+
     if(len(sys.argv) == 1):
         parser.print_help()
         exit()
     
     options, img_list = parser.parse_args()
-    modes = sum([getattr(options or False, name) for name in\
-        ['move', 'copy', 'update', 'link']])
-    if not modes:
+    num_modes = sum([getattr(options or False, name) for name in modes])
+    if not num_modes:
         options.move = True
 
-    if modes > 1:
-        parser.error("only one action from 'move', 'copy', 'update', 'link'"\
+    if num_modes > 1:
+        parser.error("only one action from "+ ",".join(modes) + \
             " can be choosen")
 
     #Create 'mode' option depending on action choosen
-    for name in 'move', 'copy', 'update', 'link':
+    for name in modes:
         if getattr(options, name, False):
             options.mode = name
+            break
 
     result = {'image_list':img_list}
     for k, v in options.__dict__.items():
-        if not k in skip_names:
+        if not k in modes:
             result[k] = v
-            
+
     return result
 
 
@@ -156,11 +161,11 @@ def process_images(pattern, mode, image_list, output, verbose=False,
 
         #Performing actual changes
         if not os.path.exists(dest):
-            if verbose:
-                if mode != "update":
-                    print('"' + src + '" => "' + dest + '"')
-                else:
+            if verbose or mode == "dummy":
+                if mode == "update":
                     print("updating " + src)
+                else:
+                    print('"' + src + '" => "' + dest + '"')
             
             if mode in ("move", "link"):
                 shutil.move(src, dest)
