@@ -29,7 +29,8 @@ import time
 import pyexiv2
 
 def parse_options():
-    parser = OptionParser()
+    usage = "usage: %prog [options] [images]"
+    parser = OptionParser(usage=usage)
     modes = ('link', 'move', 'copy', 'dummy')
     parser.add_option("-o", "--output", dest="output",
                     help="Use specified image output directory. If not set"\
