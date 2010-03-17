@@ -32,41 +32,41 @@ def parse_options():
     parser = OptionParser()
     skip_names = ('link','move','update','copy')
     parser.add_option("-o", "--output", dest="output",
-                    help="use specified image output directory. If not set"\
+                    help="Use specified image output directory. If not set"\
                     ", each image's original directory is preserved",
                     metavar="DIRECTORY")
     
     parser.add_option("-v", "--verbose",
                     action="store_true", dest="verbose", default=False,
-                    help="print status messages other than errors to stdout")
+                    help="Print status messages other than errors to stdout")
 
     parser.add_option("-p", "--pattern", dest="pattern", default="{n}",
-                    help="specify filename pattern. variables:\n"\
-                    " {n} - image number (required).\n"\
-                    "Example: -p \"some name {n}\"")
+                    help="Specify filename pattern. variables:\n"\
+                    " {n} - image number (required).\n "\
+                    " Example: -p \"some name {n}\"")
 
     parser.add_option("-e", "--exif-date", help="Exif's date field name to"\
-                    "use in first place")
+                    " use in first place")
     
     #Modes. Only one of the following can be choosen
     parser.add_option("-m", "--move", dest="move", action="store_true",
                     default=False,
-                    help="move / rename images. this is the default action")
+                    help="Move / rename images. this is the default action")
 
     parser.add_option("-c", "--copy", dest="copy", action="store_true",
                     default=False,
-                    help="copy images instead of renaming them")
+                    help="Copy images instead of renaming them")
 
     parser.add_option("-u", "--update", dest="update", action="store_true",
                     default=False,
-                    help="only update system's image access and modification"\
-                        "date. Comes handy after modifying (ie. rotating)"\
-                        "the photos that are already sorted")
+                    help="Only update system's image access and modification"\
+                        " date. Comes handy after modifying (ie. rotating)"\
+                        " the photos that are already sorted / named.")
 
     parser.add_option("-l", "--link", dest="link", action="store_true",
                     default=False,
-                    help="like -m but also creates symbolic links with old"\
-                    " images names to new ones. POSIX only")
+                    help="Like -m but also creates symbolic links for new"\
+                    " images with old one's path and name")
 
     if(len(sys.argv) == 1):
         parser.print_help()
