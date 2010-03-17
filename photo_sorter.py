@@ -115,7 +115,6 @@ def process_images(pattern, mode, image_list, output, verbose=False,
     
     #Loading images and extracting their data
     for filename in image_list:
-        date = None
         if os.path.isdir(filename):
             print('WARNING: "{0}" is a directory, skipping'.format(filename))
             continue
@@ -130,7 +129,8 @@ def process_images(pattern, mode, image_list, output, verbose=False,
         for f in date_fields:
             try:
                 date = image[f]
-            except Exception:
+                break
+            except KeyError:
                 if f == exif_date:
                     print("WARNING: Custom exif date field \"{0}\" not found"\
                         "in \"{1}\"".format(exif_date, filename))
@@ -153,6 +153,7 @@ def process_images(pattern, mode, image_list, output, verbose=False,
     for i, p in enumerate(photos):
         src = p['filename']
         img = p['image']
+        date = p['date']
         new_name = pattern
         # Formatting pattern. Since 'format' requires all arguments on one call,
         #   use 'replace' instead
