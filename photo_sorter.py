@@ -30,7 +30,7 @@ import pyexiv2
 
 def parse_options():
     parser = OptionParser()
-    modes = ('link', 'move', 'update', 'copy', 'dummy')
+    modes = ('link', 'move', 'copy', 'dummy')
     parser.add_option("-o", "--output", dest="output",
                     help="Use specified image output directory. If not set"\
                     ", each image's original directory is preserved",
@@ -59,9 +59,11 @@ def parse_options():
 
     parser.add_option("-u", "--update", dest="update", action="store_true",
                     default=False,
-                    help="Only update system's image access and modification"\
-                        " date. Comes handy after modifying (ie. rotating)"\
-                        " the photos that are already sorted / named.")
+                    help="Update system's image access and modification"\
+                        " date to when the photo was taken. Comes handy"\
+                        " after modifying (ie. rotating)"\
+                        " photos that are already sorted / named."\
+                        " Can also be used in conjuction with other actions")
 
     parser.add_option("-l", "--link", dest="link", action="store_true",
                     default=False,
@@ -78,8 +80,9 @@ def parse_options():
         exit()
     
     options, img_list = parser.parse_args()
+    # Move is a default action
     num_modes = sum([getattr(options or False, name) for name in modes])
-    if not num_modes:
+    if not num_modes and not options.update:
         options.move = True
 
     if num_modes > 1:
@@ -91,6 +94,8 @@ def parse_options():
         if getattr(options, name, False):
             options.mode = name
             break
+    else:
+        options.mode = ""
 
     result = {'image_list':img_list}
     for k, v in options.__dict__.items():
@@ -101,7 +106,7 @@ def parse_options():
 
 
 def process_images(pattern, mode, image_list, output, verbose=False,
-        exif_date=None, force=False, **kwargs):
+        exif_date=None, update=False, force=False, **kwargs):
     
     keygetter = lambda key: lambda d: d[key]
     date_fields = ['Exif.Photo.DateTimeOriginal', 'Exif.Image.DateTime']
@@ -186,22 +191,24 @@ def process_images(pattern, mode, image_list, output, verbose=False,
         #Performing actual changes
         if not os.path.exists(dest):
             if verbose or mode == "dummy":
-                if mode == "update":
+                if not mode and update:
                     print("updating " + src)
                 else:
                     print('"' + src + '" => "' + dest + '"')
-            
-            if mode in ("move", "link"):
-                shutil.move(src, dest)
-                if mode == "link":
-                    os.symlink(dest, src)
-                    
-            if mode == "copy":
-                shutil.copy(src, dest)
 
-            if mode == "update":
-                timestamp = int(time.mktime(date.timetuple()))
-                os.utime(src, (timestamp, timestamp))
+            if mode != "dummy":
+                if mode in ("move", "link"):
+                    shutil.move(src, dest)
+                    if mode == "link":
+                        os.symlink(dest, src)
+
+                if mode == "copy":
+                    shutil.copy(src, dest)
+
+                if update:
+                    f = dest if mode else src
+                    timestamp = int(time.mktime(date.timetuple()))
+                    os.utime(f, (timestamp, timestamp))
 
         else:
             print('ERROR: File {0} already exists, skipping'.format(dest))
