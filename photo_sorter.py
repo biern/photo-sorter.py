@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright 2010 Marcin Biernat
 #    This program is free software: you can redistribute it and/or modify
