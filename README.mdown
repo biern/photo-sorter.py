@@ -8,19 +8,20 @@ photos according to factors like time taken and camera model.
 ##  Exapmles:
 
 * Renaming photos ( -m --move)
-  `photo_sorter.py -mp "name - {n}{model}" -o "../output_dir"
-  photo_sorter.py -p "name" # -m is default option and can be ommited
-                            # " {n}" is appended automatically if not found
-                            # -o defaults to each photo's own directory`
+        photo_sorter.py -mp "name - {n}{model}" -o "../output_dir"
+        photo_sorter.py -p "name" # -m is default option and can be ommited
+                                    # " {n}" is appended automatically if not found
+                                    # -o defaults to each photo's own directory
 
 * Seeing what changes would be done without performing them ( -d --dummy)
-  `photo_sorter.py -dp "photo - {n}{model}" *.png ../others/*`
+        photo_sorter.py -dp "photo - {n}{model}" *.png ../others/*
 
 * Copying photos ( -c --copy)
-  `photo_sorter.py -c "name" # works just like -m`
+        photo_sorter.py -c "name" # works just like -m
 
-* Updating photos date:
-  `photo_sorter.py -u * # Note that -u can be combined with -c and -m`
-  This updates os' file modification time to that when the photo was taken.
+* Updating photos date ( -u --update)
+    This updates os' file modification time to that when the photo was taken.
+    Note that -u can be combined with `-c` and `-m`
+        photo_sorter.py -u *
 
 Copyright © 2010 Marcin Biernat <biern.m@gmail.com>. Licensed under the GPLv3
