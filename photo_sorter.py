@@ -45,8 +45,8 @@ def parse_options():
     parser.add_option("-p", "--pattern", dest="pattern", default="{n}",
                     help="Specify filename pattern. variables:\n"\
                     " {n} - image number.\n "\
-                    " {camera} - camera id "\
-                    " Example: -p \"some name {n}{camera}\"")
+                    " {model} - camera model id "\
+                    " Example: -p \"some name {n}{model}\"")
 
     parser.add_option("-e", "--exif-date", help="Exif's date field name to"\
                     " use in first place")
