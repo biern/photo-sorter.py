@@ -18,6 +18,7 @@
 #   - Readme and docs
 #   - more optional arguments for filename template
 #   - switch and prompt for overriding existing files
+#   - checking if selected file is an image.
 
 
 import sys
@@ -43,8 +44,9 @@ def parse_options():
 
     parser.add_option("-p", "--pattern", dest="pattern", default="{n}",
                     help="Specify filename pattern. variables:\n"\
-                    " {n} - image number (required).\n "\
-                    " Example: -p \"some name {n}\"")
+                    " {n} - image number.\n "\
+                    " {camera} - camera id "\
+                    " Example: -p \"some name {n}{camera}\"")
 
     parser.add_option("-e", "--exif-date", help="Exif's date field name to"\
                     " use in first place")
@@ -146,7 +148,12 @@ def process_images(pattern, mode, image_list, output, verbose=False,
             print('WARNING: Unable to recognize {0} date, skipping'\
                 .format(filename))
 
-    # Replacing pattern with more sophisticated one
+    # - Pattern operations -
+    # Appending 'n' var if its missing
+    if pattern.find("{n}") < 0:
+        pattern += " {n}"
+
+    # Generating 'n' width
     l = len(photos)
     min_n_width = str(max(len(str(l)), 4))
     pattern = pattern.replace("{n}","{n:0"+min_n_width+"}")
@@ -156,6 +163,7 @@ def process_images(pattern, mode, image_list, output, verbose=False,
     # Initializing vars
     model_mapping = {None:"_"}
     next_model_id = "A"
+    # Performing desired operation on each of selected images
     for i, p in enumerate(photos):
         src = p['filename']
         img = p['image']
