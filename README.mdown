@@ -24,6 +24,6 @@ photos according to factors like time taken and camera model.
     Note that -u can be combined with `-c` and `-m`
         photo_sorter.py -u *
 
-* For full reference run `photo_sorter.py --help` or `photo_sorter.py'
+* For full reference run `photo_sorter.py --help` or `photo_sorter.py`
 
 Copyright © 2010 Marcin Biernat <biern.m@gmail.com>. Licensed under the GPLv3
