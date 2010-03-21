@@ -3,7 +3,7 @@ Python script for sorting (renaming / copying / updating date)
 photos according to factors like time taken and camera model.
 
 ##  Installation:
-`sudo python setup.py install`
+        sudo python setup.py install
 
 ##  Examples:
 
