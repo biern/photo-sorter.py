@@ -38,8 +38,8 @@ Examples
        photo-sorter.py -c "name" * # works just like -m
 
 - Updating photos date ( -u --update)
-    This updates os' file modification time to that when the photo was taken.
-    Note that -u can be combined with `-c` and `-m`
+  This updates os' file modification time to that when the photo was taken.
+  Note that -u can be combined with `-c` and `-m`
 
 ::
 
