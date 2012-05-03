@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 from distutils.core import setup
 
-setup(name='Photo-sorter',
-      description='Photo sorting utility',
-      version='0.1',
-      scripts=['photo_sorter.py'],
+setup(name='photo-sorter.py',
+      description='Image sorting utility',
+      version='0.2',
+      scripts=['photo-sorter.py'],
+      requires=['pyexiv2==0.3.0'],
       author='Marcin Biernat',
-      author_email='biern.m@gmail.com',
-      url='http://github.com/biern/Photo-sorter'
+      author_email='mb@marcinbiernat.pl',
+      url='http://github.com/biern/photo-sorter.py'
       )
