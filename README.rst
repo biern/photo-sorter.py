@@ -20,8 +20,8 @@ Examples
 
 ::
 
-        photo_sorter.py * -mp "name - {n}{model}" -o "../output_dir"
-        photo_sorter.py * -p "name" # -m is default option and can be ommited
+        photo-sorter.py * -mp "name - {n}{model}" -o "../output_dir"
+        photo-sorter.py * -p "name" # -m is default option and can be ommited
                                     # " {n}" is appended automatically if not found
                                     # -o defaults to each photo's own directory
 
@@ -29,13 +29,13 @@ Examples
 
 ::
 
-       photo_sorter.py -dp "photo - {n}{model}" *.png ../others/*
+       photo-sorter.py -dp "photo - {n}{model}" *.png ../others/*
 
 - Copying photos ( -c --copy)
 
 ::
 
-       photo_sorter.py -c "name" * # works just like -m
+       photo-sorter.py -c "name" * # works just like -m
 
 - Updating photos date ( -u --update)
     This updates os' file modification time to that when the photo was taken.
@@ -43,7 +43,7 @@ Examples
 
 ::
 
-       photo_sorter.py -u *
+       photo-sorter.py -u *
 
 - For full reference run
 
