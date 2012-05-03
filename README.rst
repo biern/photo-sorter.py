@@ -13,10 +13,10 @@ Installation
 
         sudo python setup.py install
 
-Examples:
-=========
+Examples
+========
 
-* Renaming photos ( -m --move)
+- Renaming photos ( -m --move)
 
 ::
 
@@ -25,21 +25,29 @@ Examples:
                                     # " {n}" is appended automatically if not found
                                     # -o defaults to each photo's own directory
 
-* Seeing what changes would be done without performing them ( -d --dummy) ::
+- Seeing what changes would be done without performing them ( -d --dummy)
+
+::
 
        photo_sorter.py -dp "photo - {n}{model}" *.png ../others/*
 
-* Copying photos ( -c --copy) ::
+- Copying photos ( -c --copy)
+
+::
 
        photo_sorter.py -c "name" * # works just like -m
 
-* Updating photos date ( -u --update)
+- Updating photos date ( -u --update)
     This updates os' file modification time to that when the photo was taken.
-    Note that -u can be combined with `-c` and `-m` ::
+    Note that -u can be combined with `-c` and `-m`
+
+::
 
        photo_sorter.py -u *
 
-* For full reference run ::
+- For full reference run
+
+::
 
        photo-sorter.py --help
 
